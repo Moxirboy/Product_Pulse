@@ -64,9 +64,15 @@ public class ProductPulse extends Application {
         table.getColumns().addAll(nameColumn,quantityColumn,OutDateColumn);
         //
         Menu filMenu =new Menu("file");
+        filMenu.getItems().add(new MenuItem("add Product"));
+        filMenu.getItems().add(new MenuItem("add Product"));
+        filMenu.getItems().add(new MenuItem("add Product"));
+        //
+        MenuBar menuBar=new MenuBar();
+        menuBar.getMenus().addAll(filMenu);
 
        VBox vBox=new VBox();
-       vBox.getChildren().addAll(hbox,table);
+       vBox.getChildren().addAll(menuBar,hbox,table);
        //
        Scene scene =new Scene(vBox,300,340);
        //
