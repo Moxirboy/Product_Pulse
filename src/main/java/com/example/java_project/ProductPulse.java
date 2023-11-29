@@ -1,5 +1,7 @@
 package com.example.java_project;
 
+import com.example.java_project.Product;
+import com.example.java_project.alert;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,14 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+
 public class ProductPulse extends Application {
-    TableView<Dashboard> table;
-    Stage window;
-    Scene scene2;
-    TextField NameInput, OutDate , quantity;
+    Stage mainStage;
+    Scene mainScene;
+    public static TableView<Product> addtable = new TableView<>();
+    TextField newProductName, newProductAmount;
+    DatePicker DateExpire;
 
     public static void main(String[] args) {
         launch(args);
@@ -23,96 +29,119 @@ public class ProductPulse extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-       window =stage;
-       //
-        TableColumn<Dashboard, String> nameColumn=new TableColumn<>("Name");
-        nameColumn.setMinWidth(200);
+        mainStage = stage;
+        // Name column
+        TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setMinWidth(180);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //
-        TableColumn<Dashboard, String> quantityColumn=new TableColumn<>("quantity");
-        quantityColumn.setMinWidth(200);
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        //
-        TableColumn<Dashboard, String> OutDateColumn=new TableColumn<>("OutDateColumn");
-        OutDateColumn.setMinWidth(200);
-        OutDateColumn.setCellValueFactory(new PropertyValueFactory<>("OutDateColumn"));
-        //
-        NameInput=new TextField();
-        NameInput.setPromptText("Name");
-        NameInput.setMinWidth(100);
-        //
-        OutDate =new TextField();
-        OutDate.setPromptText("OutDate");
-        //
-        quantity=new TextField();
-        quantity.setPromptText("quantity");
+
+        // Amount column
+        TableColumn<Product, String> amountColumn = new TableColumn<>("quantity");
+        amountColumn.setMinWidth(180);
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        // Expire date column
+        TableColumn<Product, String> expireColumn = new TableColumn<>("Expire");
+        expireColumn.setMinWidth(180);
+        expireColumn.setCellValueFactory(new PropertyValueFactory<>("expire"));
+
+        // Registered date column
+        TableColumn<Product, String > registeredColumn = new TableColumn<>("Registered");
+        registeredColumn.setMinWidth(180);
+        registeredColumn.setCellValueFactory(new PropertyValueFactory<>("registered"));
+
+        // Adding table
+        addtable.getColumns().addAll(nameColumn, amountColumn, expireColumn, registeredColumn);
+        addtable.setItems(getProducts());
+
+        // Components for adding new Product
+        newProductName = new TextField();
+        newProductName.setPromptText("Product name");
+        DateExpire = new DatePicker();
+        DateExpire.setPromptText("Expire date");
+        newProductAmount = new TextField();
+        newProductAmount.setPromptText("Amount");
+
+        Button addProduct = new Button("Add");
+        addProduct.setOnAction(e -> addProductToTable());
+
+        Button deleteProduct = new Button("Delete");
+        deleteProduct.setOnAction(e -> actionDelete());
+
+        // Hbox for holding editing components
+        HBox editingComp = new HBox();
+        editingComp.setSpacing(20);
+        editingComp.getChildren().addAll(newProductName, newProductAmount, DateExpire, addProduct, deleteProduct);
+
+        // Layout for holding table and editing components
+        VBox addProducts = new VBox();
+        addProducts.setSpacing(20);
+        addProducts.setPadding(new Insets(10, 10, 10, 10));
+        addProducts.getChildren().addAll(addtable, editingComp);
+
+        // Navigation buttons
+        Button toProducts = new Button("Products");
+        toProducts.setOnAction(e -> mainStage.setScene(mainScene));
+        toProducts.setMinWidth(100);
+
+        Button toAlert = new Button("Alert");
+        toAlert.setOnAction(e -> mainStage.setScene(alert.alert(mainStage))); // Assuming alert is an instance of another class
+        toAlert.setMinWidth(100);
+
+        Button toSell = new Button("Sell");
+        toSell.setOnAction(e -> {
+            // Add your sell logic here
+        });
+        toSell.setMinWidth(100);
+
+        // Layout for switching screens
+        StackPane cards = new StackPane();
+        cards.getChildren().addAll(addProducts);
 
 
-        //
-        Button addButton=new Button("add");
-        addButton.setOnAction(e->actionAdd());
-        Button deleteButton=new Button("delete");
-        deleteButton.setOnAction(e->actionDelete());
-        //
-        HBox hbox=new HBox();
-        hbox.setPadding(new Insets(10,10,10,10));
-        hbox.setSpacing(10);
-        hbox.getChildren().addAll(NameInput,OutDate,quantity,addButton,deleteButton);
-        //
-        table =new TableView<>();
-        table.setItems(getProducts());
-        table.getColumns().addAll(nameColumn,quantityColumn,OutDateColumn);
-        //
-        Menu filMenu =new Menu("file");
-        filMenu.getItems().add(new MenuItem("add Product"));
-        filMenu.getItems().add(new MenuItem("add Product"));
-        filMenu.getItems().add(new MenuItem("add Product"));
-        //
-        MenuBar menuBar=new MenuBar();
-        menuBar.getMenus().addAll(filMenu);
 
-       VBox vBox=new VBox();
-       vBox.getChildren().addAll(menuBar,hbox,table);
-       //
-       Scene scene =new Scene(vBox,300,340);
-       //
-       window.setScene(scene);
-       window.setTitle("Product Pulse");
-       window.show();
+        VBox navigationBar = new VBox();
+        navigationBar.setSpacing(20);
+        navigationBar.setPadding(new Insets(60, 10, 10, 10));
+        navigationBar.getChildren().addAll(toProducts, toAlert, toSell);
 
+        // Main layout for holding all components
+        HBox mainLayout = new HBox();
+        mainLayout.setSpacing(10);
+        mainLayout.getChildren().addAll(navigationBar, cards);
+
+        mainScene = new Scene(mainLayout);
+
+        mainStage.setScene(mainScene);
+        mainStage.setResizable(false);
+        mainStage.show();
+    }
+
+    public void addProductToTable() {
+        try {
+            // If product name is not entered
+            if (newProductName.getText().isEmpty())
+                throw new Exception();
+
+            String name = newProductName.getText();
+            String quantity = newProductAmount.getText();
+            LocalDate expireDate =DateExpire.getValue();
+            addtable.getItems().add(new Product(name, quantity, expireDate));
+            newProductName.clear();
+            newProductAmount.clear();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void actionDelete() {
+        ObservableList<Product> productSelected, allProducts;
+        allProducts = addtable.getItems();
+        productSelected = addtable.getSelectionModel().getSelectedItems();
+        productSelected.forEach(allProducts::remove);
+    }
+
+    public static ObservableList<Product> getProducts() {
+        return FXCollections.observableArrayList();
+    }
 }
-
-    public void actionAdd(){
-        Dashboard dashboard =new Dashboard();
-        dashboard.setName(NameInput.getText());
-        dashboard.setQuantity(Integer.parseInt(quantity.getText()));
-        dashboard.setOutDate(OutDate.getText());
-        table.getItems().add(dashboard);
-        NameInput.clear();
-        quantity.clear();
-        OutDate.clear();
-    }
-    public void actionDelete(){
-       ObservableList<Dashboard> productSelected ,allproducts;
-        allproducts=table.getItems();
-        productSelected=table.getSelectionModel().getSelectedItems();
-        productSelected.forEach(allproducts::remove);
-    }
-    ObservableList<Dashboard > product = FXCollections.observableArrayList();
-    public ObservableList<Dashboard> getProducts(){
-
-        product.add(new Dashboard("laptop",12,"12.27","01.28"));
-        product.add(new Dashboard("yogaList",12,"12.27","01.28"));
-        product.add(new Dashboard("Mobile Phone",12,"12.27","01.28"));
-
-
-
-        return product;
-    }
-//    public actionDelete(){
-//
-//    }
-
-
-}
-

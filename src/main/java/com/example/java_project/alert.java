@@ -1,29 +1,40 @@
 package com.example.java_project;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static com.example.java_project.ProductPulse.addtable;
+
 public class alert{
-    public static void alert(String title,String message){
-        Stage window =new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("hi motherfuc");
-        window.setMinWidth(200);
-        Label label =new Label();
-        label.setText(message);
-        Button button=new Button("close button");
-        button.setOnAction(e->window.close());
+
+    public static Scene alert(Stage window){
+
+        addtable.setItems(ProductPulse.getProducts());
+
+        VBox addProducts = new VBox();
+        addProducts.setSpacing(20);
+        addProducts.setPadding(new Insets(10, 10, 10, 10));
+        addProducts.getChildren().addAll(addtable);
+
+        StackPane cards = new StackPane();
+        cards.getChildren().addAll(addProducts);
         VBox layout =new VBox(10);
-        layout.getChildren().addAll(label,button);
+        layout.getChildren().addAll(cards);
         layout.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(layout);
-        window.setScene(scene);
-        window.show();
+        return new Scene(layout);
 
     }
+
 }
