@@ -74,16 +74,16 @@ public class ProductPulse extends Application {
      
         addtable.setRowFactory(tv -> new TableRow<Product>() {
             final static private Background green=new Background(//color code for long expiration date
-                new BackgroundFill(
-                        Color.GREEN, null, null
-                ));
+                    new BackgroundFill(
+                            Color.rgb(0, 170, 0), null, null
+                    ));
             final static private Background yellow=new Background(//color code for short expiration date
-                new BackgroundFill(
-                        Color.GOLDENROD, null, null
-                ));
+                    new BackgroundFill(
+                            Color.rgb(255, 170, 51), null, null
+                    ));
             final static private Background red =new Background(// color code for product near to expire or expired
                 new BackgroundFill(
-                        Color.rgb(255, 170, 51), null, null
+                        Color.rgb(255, 0, 0), null, null
                 ));
             static private LocalDate today=LocalDate.now();
 
@@ -93,12 +93,10 @@ public class ProductPulse extends Application {
                     return;
                     
                 int daysLeft=(int)ChronoUnit.DAYS.between(today,item.getExpire());//calculating days to expire
-                if(daysLeft<30)
-                {
+                if(daysLeft<30) {
                     this.setBackground(red);
                     return;
-                }
-                if(daysLeft<90)
+                }else if(daysLeft<90&&daysLeft>30)
                 {
                     this.setBackground(yellow);
                     return;
