@@ -21,7 +21,6 @@ public class alert{
 
     public static Scene alert(Stage window){
 
-        addtable.setItems(ProductPulse.getProducts());
 
         VBox addProducts = new VBox();
         addProducts.setSpacing(20);

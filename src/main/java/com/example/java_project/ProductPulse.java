@@ -1,7 +1,5 @@
 package com.example.java_project;
 
-import com.example.java_project.Product;
-import com.example.java_project.alert;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -21,12 +18,9 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import javax.print.CancelablePrintJob;
-
-import org.controlsfx.control.PropertySheet.Item;
-
 public class ProductPulse extends Application {
     Stage mainStage;
+    NamedChatClient chat =new NamedChatClient();
     Scene mainScene;
     public static TableView<Product> addtable = new TableView<>();
     TextField newProductName, newProductQuantity,newProductPrice;// Text Fields for getting data about product to be aded
@@ -160,11 +154,9 @@ public class ProductPulse extends Application {
         toAlert.setOnAction(e -> mainStage.setScene(alert.alert(mainStage))); // Assuming alert is an instance of another class
         toAlert.setMinWidth(100);
 
-        Button toSell = new Button("Sell");
-        toSell.setOnAction(e -> {
-            // Add your sell logic here
-        });
-        toSell.setMinWidth(100);
+        Button toChat = new Button("Chat");
+        toChat.setOnAction(e -> openChat());
+        toChat.setMinWidth(100);
 
         // Layout for switching screens
         StackPane cards = new StackPane();
@@ -173,7 +165,7 @@ public class ProductPulse extends Application {
         VBox navigationBar = new VBox();
         navigationBar.setSpacing(20);
         navigationBar.setPadding(new Insets(60, 10, 10, 10));
-        navigationBar.getChildren().addAll(toProducts, toAlert, toSell);
+        navigationBar.getChildren().addAll(toProducts, toAlert, toChat);
 
         // Main layout for holding all components
         HBox mainLayout = new HBox();
@@ -261,5 +253,9 @@ public class ProductPulse extends Application {
 
     public static ObservableList<Product> getProducts() {
         return FXCollections.observableArrayList();
+    }
+    private void openChat() {
+        NamedChatClient chatClient = new NamedChatClient();
+        chatClient.chat(new Stage());
     }
 }
