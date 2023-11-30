@@ -150,9 +150,6 @@ public class ProductPulse extends Application {
         Button toProducts = new Button("Products");
         toProducts.setOnAction(e -> mainStage.setScene(mainScene));
         toProducts.setMinWidth(100);
-        Button toAlert = new Button("Alert");
-        toAlert.setOnAction(e -> mainStage.setScene(alert.alert(mainStage))); // Assuming alert is an instance of another class
-        toAlert.setMinWidth(100);
 
         Button toChat = new Button("Chat");
         toChat.setOnAction(e -> openChat());
@@ -165,7 +162,7 @@ public class ProductPulse extends Application {
         VBox navigationBar = new VBox();
         navigationBar.setSpacing(20);
         navigationBar.setPadding(new Insets(60, 10, 10, 10));
-        navigationBar.getChildren().addAll(toProducts, toAlert, toChat);
+        navigationBar.getChildren().addAll(toProducts, toChat);
 
         // Main layout for holding all components
         HBox mainLayout = new HBox();

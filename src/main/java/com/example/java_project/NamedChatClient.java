@@ -108,6 +108,10 @@ public class NamedChatClient   {
         if (!message.trim().isEmpty()) {
             output.println(message);
         }
+        // mysql inserting data
+    }
+    private void getAllMessageFromDatabase(){
+
     }
 
 }
