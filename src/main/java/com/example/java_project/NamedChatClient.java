@@ -3,7 +3,10 @@ package com.example.java_project;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -74,12 +77,13 @@ public class NamedChatClient   {
 
         // Layout
         VBox layout = new VBox(10);
-        Button toMain = new Button("Chat");
-        toMain.setMinWidth(100);
         layout.getChildren().addAll(chatArea, messageField);
-
+        layout.setBackground(new Background(new BackgroundFill(
+                Color.rgb(50, 0, 255), null, null
+        )));
         // Scene for the chat
         Scene chatScene = new Scene(layout, 300, 210);
+
         primaryStage.setScene(chatScene);
 
         // Show the stage
@@ -96,6 +100,9 @@ public class NamedChatClient   {
                 while (input.hasNextLine()) {
                     String message = input.nextLine();
                     Platform.runLater(() -> chatArea.appendText(message + "\n"));
+                    chatArea.setBackground(new Background(new BackgroundFill(
+                            Color.rgb(204, 0, 255), null, null
+                    )));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

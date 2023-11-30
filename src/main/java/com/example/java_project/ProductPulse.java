@@ -7,16 +7,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.sql.*;
+import java.util.Stack;
 
 public class ProductPulse extends Application {
     Stage mainStage;
@@ -27,7 +26,7 @@ public class ProductPulse extends Application {
     DatePicker dateExpire;// to get input for expire date
     ComboBox<String> quantityUnit;// Unit of measurment of a product (kilos, liters, peaces)
     Button addButton,deleteProduct,editButton;
-    boolean editingMode;// true when when editing a existing product in the table
+    boolean editingMode;// true  when editing  existing product in the table
     public static void main(String[] args) {
         launch(args);
     }
@@ -35,6 +34,8 @@ public class ProductPulse extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
+        mainStage.setTitle("Product pulse");
+
         // Name column
         TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setMinWidth(180);
@@ -65,7 +66,8 @@ public class ProductPulse extends Application {
         // Adding table
         addtable.getColumns().addAll(nameColumn,priceColumn,amountColumn, expireColumn, registeredColumn);
         addtable.setItems(getProducts());
-     
+
+
         addtable.setRowFactory(tv -> new TableRow<Product>() {
             final static private Background green=new Background(//color code for long expiration date
                     new BackgroundFill(
@@ -144,33 +146,53 @@ public class ProductPulse extends Application {
         VBox addButtons = new VBox();
         addButtons.setSpacing(20);
         addButtons.setPadding(new Insets(10, 10, 10, 10));
-        addButtons.getChildren().addAll(addtable, editingComp);
+        addButtons.setBackground(
+                new Background(new BackgroundFill(
+                        Color.rgb(255, 196, 54), null, null
+                ))
+        );
+        addButtons.getChildren().addAll( editingComp,addtable);
 
         // Navigation buttons
         Button toProducts = new Button("Products");
         toProducts.setOnAction(e -> mainStage.setScene(mainScene));
+        toProducts.setBackground( new Background(new BackgroundFill(
+                Color.rgb(100, 204, 197), null, null
+        )));
         toProducts.setMinWidth(100);
 
         Button toChat = new Button("Chat");
+        toChat.setBackground( new Background(new BackgroundFill(
+                Color.rgb(100, 204, 197), null, null
+        )));
         toChat.setOnAction(e -> openChat());
         toChat.setMinWidth(100);
 
         // Layout for switching screens
-        StackPane cards = new StackPane();
+        HBox cards = new HBox();
         cards.getChildren().addAll(addButtons);
 
         VBox navigationBar = new VBox();
         navigationBar.setSpacing(20);
         navigationBar.setPadding(new Insets(60, 10, 10, 10));
-        navigationBar.getChildren().addAll(toProducts, toChat);
+        navigationBar.setBackground(new Background(new BackgroundFill(
+                Color.rgb(100, 204, 197), null, null
+        )));
+
+        Image productPulseImage = new Image("http://www.dataconsulting.co.uk/wp-content/uploads/2016/01/ACL-PulseNewsletter-header-v5.jpg");
+        mainStage.getIcons().add(productPulseImage);
+//        ImageView imageView=new ImageView(productPulseImage);
+//        imageView.setFitHeight(40);
+//        imageView.setFitWidth(40);
+        navigationBar.getChildren().addAll( toProducts, toChat);
+
 
         // Main layout for holding all components
         HBox mainLayout = new HBox();
-        mainLayout.setSpacing(10);
+
         mainLayout.getChildren().addAll(navigationBar, cards);
 
         mainScene = new Scene(mainLayout);
-
         mainStage.setScene(mainScene);
         mainStage.setResizable(false);
         mainStage.show();

@@ -8,7 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/java_project/NamedChatClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/java_project/NamedChatClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/java_project/ProductPulse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/java_project/ProductPulse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/java_project/alert.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +54,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.server">
+  <component name="RunManager" selected="Application.ProductPulse">
     <configuration name="ProductPulse" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.java_project.ProductPulse" />
       <module name="java_project" />
@@ -96,8 +96,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.server" />
         <item itemvalue="Application.ProductPulse" />
+        <item itemvalue="Application.server" />
         <item itemvalue="Application.chat" />
       </list>
     </recent_temporary>
