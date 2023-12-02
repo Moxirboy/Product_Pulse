@@ -6,7 +6,8 @@ module com.example.java_project {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
-
+    requires java.sql;
+    
     opens com.example.java_project to javafx.fxml;
     exports com.example.java_project;
 }

@@ -7,6 +7,7 @@ import javafx.util.converter.LocalDateStringConverter;
 public class Product {
 
 
+    String packageID;         // Package ID of the product, is unique,works as primary key
     String name ;            //name of the product
     int quantity;           // quantity of the product
     float price;           //Price of the product
@@ -23,7 +24,9 @@ public class Product {
 
     }
 
-    Product(String name,float price,int quantity ,String unitOfQuantity,LocalDate expireDate,LocalDate registerDate){
+    Product(String packageID,String name,float price,int quantity ,String unitOfQuantity,LocalDate expireDate,LocalDate registerDate){
+        
+        this.packageID=packageID;
         this.name=name;
         this.price=price;
         this.quantity=quantity;
@@ -78,5 +81,13 @@ public class Product {
 
     public void setUnit(String unitOfQuantity) {
         this.unit = unitOfQuantity;
+    }
+
+    public String getPackageID() {
+        return packageID;
+    }
+
+    public void setPackageID(String packageID) {
+        this.packageID = packageID;
     }
 }
